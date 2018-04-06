@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <a href="{% url 'shelf:author-list' %}">Powrót do listy autorów</a>
+
+    <h1>Lista ze szczegułami autora</h1>
+
+    {{ autor.id }}
+
+
+{% endblock %}
+
