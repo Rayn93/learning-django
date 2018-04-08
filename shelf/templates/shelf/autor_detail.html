@@ -4,9 +4,15 @@
 
     <a href="{% url 'shelf:author-list' %}">Powrót do listy autorów</a>
 
-    <h1>Lista ze szczegułami autora</h1>
+    <h1>Lista ze szczegułami autora: {{ object.last_name }}, {{ object.first_name }}</h1>
 
-    {{ autor.id }}
+    <h2>Książki</h2>
+
+    <ul>
+        {% for book in object.book_set.all %}
+            <li><a href={% url 'shelf:book-detail' book.id %}> {{ book.title }} </a></li>
+        {% endfor %}
+    </ul>
 
 
 {% endblock %}

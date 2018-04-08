@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <a href="{% url 'shelf:book-list' %}">Powrót do listy książek</a>
+
+    <h1>Lista ze szczegułami książki: </h1>
+
+
+        <p>Tytuł: {{ object.title }}</p>
+        <p>Autorzy:
+            {% for autor in object.authors.all %}
+                {{ autor }}
+            {% endfor %}
+        </p>
+        <p>Kategorie:
+            {% for category in object.categories.all %}
+                {{ category }}
+            {% endfor %}
+        </p>
+
+
+
+
+
+{% endblock %}
+
