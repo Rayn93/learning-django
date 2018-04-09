@@ -6,6 +6,35 @@
 </head>
 <body>
 
+<header>
+
+    {% block menu %}
+
+        <nav>
+            <ul>
+                <li><a href="{% url 'main-page' %}">Home</a> </li>
+                <li><a href="{% url 'shelf:book-list' %}">Lista książek</a> </li>
+                <li><a href="{% url 'shelf:author-list' %}">Lista autorów</a> </li>
+                <li><a href="{% url 'contact-us' %}">Kontakt</a> </li>
+
+
+                {% if user.is_authenticated %}
+{#                    <li><a href="{% url '' %}">Panel admina</a> </li>#}
+                    <li><a href="{% url 'account_logout' %}">Wyloguj się</a> </li>
+                {% else %}
+                    <li><a href="{% url 'account_login' %}">Zaloguj się</a> </li>
+                    <li><a href="{% url 'account_signup' %}">Stwrzórz konto</a> </li>
+                {% endif %}
+
+
+        </ul>
+        </nav>
+
+
+    {% endblock %}
+
+ </header>
+
     {% block content %}{% endblock %}
 
 </body>

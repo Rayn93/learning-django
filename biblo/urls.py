@@ -20,9 +20,10 @@ from contact.views import MessageAddView
 from shelf.views import MainPageView
 
 urlpatterns = [
+    url(r'^accounts/', include('allauth.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^shelf/', include('shelf.urls', namespace='shelf')),
-    url(r'^contact/$', MessageAddView.as_view()),
+    url(r'^contact/$', MessageAddView.as_view(), name='contact-us'),
     url(r'$', MainPageView.as_view(), name='main-page'),
     # url(r'$', 'shelf.views.index_view', name='main-page'),
 ]
