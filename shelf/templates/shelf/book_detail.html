@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load shelf_tags %}
 
 {% block content %}
 
@@ -18,9 +19,14 @@
                 {{ category }}
             {% endfor %}
         </p>
+        <p>Wydania:
+{#            {% for editions in object.bookediion_set.all %}#}
+{#                {{ editions.publisher }}, {{ editions.date|pub_date }}#}
+{#            {% endfor %}#}
 
+        {% show_editions object %}
 
-
+        </p>
 
 
 {% endblock %}
