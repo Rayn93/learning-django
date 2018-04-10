@@ -1,23 +1,32 @@
 {% load socialaccount %}
+{% load static %}
+{% load bootstrap3 %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Lista Autorów{% endblock %} |Biblio.pl</title>
+
+
+    {% bootstrap_css %}
+
+
 </head>
 <body>
 
 <header>
 
+{% bootstrap_messages %}
+
     {% block menu %}
 
         <nav>
             <ul>
-                <li><a href="{% url 'main-page' %}">Home</a> </li>
-                <li><a href="{% url 'shelf:book-list' %}">Lista książek</a> </li>
-                <li><a href="{% url 'shelf:author-list' %}">Lista autorów</a> </li>
-                <li><a href="{% url 'contact-us' %}">Kontakt</a> </li>
+                <li><a class="btn btn-primary" href="{% url 'main-page' %}">Home</a> </li>
+                <li><a class="btn btn-primary" href="{% url 'shelf:book-list' %}">Lista książek</a> </li>
+                <li><a class="btn btn-primary" href="{% url 'shelf:author-list' %}">Lista autorów</a> </li>
+                <li><a class="btn btn-primary" href="{% url 'contact-us' %}">Kontakt</a> </li>
 
 
                 {% if user.is_authenticated %}
@@ -42,10 +51,16 @@
 
  </header>
 
-    {% block content %}{% endblock %}
+Gruzja!!! -> <img src="{% static "img/img1.jpg" %}" alt="" width="500px">
+
+    {% block content %}
 
 
 
+    {% endblock %}
+
+
+{% bootstrap_javascript %}
 {% providers_media_js %}
 </body>
 </html>
