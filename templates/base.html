@@ -1,3 +1,5 @@
+{% load socialaccount %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,11 +26,16 @@
                 {% else %}
                     <li><a href="{% url 'account_login' %}">Zaloguj się</a> </li>
                     <li><a href="{% url 'account_signup' %}">Stwrzórz konto</a> </li>
+
+
+                    <a href="{% provider_login_url "facebook" method="js_sdk" %}">Facebook Connect</a>
                 {% endif %}
 
 
         </ul>
         </nav>
+
+
 
 
     {% endblock %}
@@ -37,5 +44,8 @@
 
     {% block content %}{% endblock %}
 
+
+
+{% providers_media_js %}
 </body>
 </html>

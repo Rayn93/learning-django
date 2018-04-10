@@ -5,6 +5,7 @@ decorator==4.2.1
 defusedxml==0.5.0
 Django==1.11
 django-allauth==0.35.0
+django-bootstrap3==9.1.0
 django-configurations==2.0
 idna==2.6
 ipython==6.3.0

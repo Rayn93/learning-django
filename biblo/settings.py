@@ -70,10 +70,13 @@ class Production(Configuration):
         'django.contrib.messages',
         'django.contrib.staticfiles',
         'django.contrib.sites',
+
         'allauth',
         'allauth.account',
         'allauth.socialaccount',
-        # 'allauth.socialaccount.providers.facebook',
+        'allauth.socialaccount.providers.facebook',
+        'bootstrap3',
+
         'users',
         'shelf',
         'contact',
@@ -179,7 +182,7 @@ class Production(Configuration):
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
-    LOGIN_URL = 'main-page'
+    LOGIN_REDIRECT_URL = 'main-page'
 
 
 
