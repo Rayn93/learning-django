@@ -9,144 +9,182 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
-
+import hashlib
 import os
+import uuid
+
+from configurations import Configuration
+
+
+
+def get_secret_key(base_dir='.'):
+    """
+    Function to generate dynamic secret key for application
+    """
+
+    def gen_key(key_path):
+        with open(key_path, 'w') as key_file:
+            key = hashlib.sha512(str(uuid.uuid4()).encode('utf8')).hexdigest()
+            key_file.write(key)
+
+        return  key
+
+    path = os.path.join(base_dir, '.secret.key')
+
+    try:
+        secret_key = open(path).read()
+        assert secret_key, "Wrong secret key"
+    except (IOError, AssertionError):
+        secret_key = gen_key(path)
+    return secret_key
+
+
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
+class Production(Configuration):
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '(ah7(rjr1b4rir85haul&yxs&bbyn60y253t*xiq^jryn$a*y!'
+    # Quick-start development settings - unsuitable for production
+    # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+    # SECURITY WARNING: keep the secret key used in production secret!
+    # SECRET_KEY = '(ah7(rjr1b4rir85haul&yxs&bbyn60y253t*xiq^jryn$a*y!'
+    SECRET_KEY = get_secret_key(BASE_DIR)
 
-ALLOWED_HOSTS = ['127.0.0.1']  # 127.0.0.1
+    # SECURITY WARNING: don't run with debug turned on in production!
+    DEBUG = False
+
+    ALLOWED_HOSTS = ['127.0.0.1']  # 127.0.0.1
 
 
-# Application definition
+    # Application definition
 
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
-    'users',
-    'shelf',
-    'contact',
-    'rental',
-]
+    INSTALLED_APPS = [
+        'django.contrib.admin',
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'django.contrib.sessions',
+        'django.contrib.messages',
+        'django.contrib.staticfiles',
+        'django.contrib.sites',
+        'allauth',
+        'allauth.account',
+        'allauth.socialaccount',
+        # 'allauth.socialaccount.providers.facebook',
+        'users',
+        'shelf',
+        'contact',
+        'rental',
+    ]
 
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+    MIDDLEWARE = [
+        'django.middleware.security.SecurityMiddleware',
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.common.CommonMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    ]
 
-ROOT_URLCONF = 'biblo.urls'
+    ROOT_URLCONF = 'biblo.urls'
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            # '/home/robert/django-kurs/biblo/templates',
-            os.path.join(BASE_DIR, 'templates')
-        ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+    TEMPLATES = [
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'DIRS': [
+                # '/home/robert/django-kurs/biblo/templates',
+                os.path.join(BASE_DIR, 'templates')
             ],
+            'APP_DIRS': True,
+            'OPTIONS': {
+                'context_processors': [
+                    'django.template.context_processors.debug',
+                    'django.template.context_processors.request',
+                    'django.contrib.auth.context_processors.auth',
+                    'django.contrib.messages.context_processors.messages',
+                ],
+            },
         },
-    },
-]
+    ]
 
-WSGI_APPLICATION = 'biblo.wsgi.application'
+    WSGI_APPLICATION = 'biblo.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
+    # Database
+    # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
 
 
-# Password validation
-# https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
+    # Password validation
+    # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.11/topics/i18n/
-
-LANGUAGE_CODE = 'pl'
-
-TIME_ZONE = 'Europe/Warsaw'
-
-USE_I18N = True  # internationalization
-
-USE_L10N = True  # localization
-
-USE_TZ = True  # use time zone
+    AUTH_PASSWORD_VALIDATORS = [
+        {
+            'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        },
+    ]
 
 
-AUTH_USER_MODEL = 'users.BiblioUser'
+    # Internationalization
+    # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.11/howto/static-files/
+    LANGUAGE_CODE = 'pl'
 
-STATIC_URL = '/static/'
+    TIME_ZONE = 'Europe/Warsaw'
 
+    USE_I18N = True  # internationalization
 
-AUTHENTICATION_BACKENDS = (
-    # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
+    USE_L10N = True  # localization
 
-    # `allauth` specific authentication methods, such as login by e-mail
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
-
-SITE_ID = 1
+    USE_TZ = True  # use time zone
 
 
-if DEBUG:
+    AUTH_USER_MODEL = 'users.BiblioUser'
+
+    # Static files (CSS, JavaScript, Images)
+    # https://docs.djangoproject.com/en/1.11/howto/static-files/
+
+    STATIC_URL = '/static/'
+
+
+    AUTHENTICATION_BACKENDS = (
+        # Needed to login by username in Django admin, regardless of `allauth`
+        'django.contrib.auth.backends.ModelBackend',
+
+        # `allauth` specific authentication methods, such as login by e-mail
+        'allauth.account.auth_backends.AuthenticationBackend',
+    )
+
+    SITE_ID = 1
+
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
+    LOGIN_URL = 'main-page'
+
+
+
+class Dev(Production):
+
+    DEBUG = True
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-
-LOGIN_URL = 'main-page'
